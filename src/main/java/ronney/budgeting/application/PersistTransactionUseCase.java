@@ -1,10 +1,12 @@
 package ronney.budgeting.application;
 
+import org.springframework.stereotype.Service;
 import ronney.budgeting.application.input.PersistTransactionInput;
 import ronney.budgeting.application.output.TransactionOutput;
 import ronney.budgeting.domain.Transaction;
 import ronney.budgeting.domain.TransactionRepository;
 
+@Service
 public class PersistTransactionUseCase {
     private final TransactionRepository transactionRepository;
 
