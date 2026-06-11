@@ -1,4 +1,4 @@
-package ronney.budgeting.infrastructure.persistence.http;
+package ronney.budgeting.controller;
 
 import org.springframework.ai.audio.transcription.TranscriptionModel;
 import org.springframework.ai.audio.tts.TextToSpeechModel;

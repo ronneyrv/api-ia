@@ -52,21 +52,17 @@ domain
 ├── Category
 └── TransactionRepository
 
-infrastructure.persistence
-├── entity
-│   └── TransactionEntity
+infrastructure
+├── persistence
+│   ├── entity
+│   └── repository
 │
-├── http
-│   ├── request
-│   │   └── TransactionRequest
-│   ├── response
-│   │   └── TransactionController
-│   └── TransactionController
+├── ai
+│   └── prompts
 │
-└── repository
-    ├── JpaTransactionRepository
-    └── TransactionRepositoryImpl
-
+└── web
+    ├── request
+    └── response
 ```
 
 ### Domain
