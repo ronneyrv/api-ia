@@ -63,7 +63,6 @@ infrastructure
 └── web
     ├── request
     └── response
-
 ```
 
 ### Domain
