@@ -1,4 +1,4 @@
-package ronney.budgeting.infrastructure.persistence.http.response;
+package ronney.budgeting.infrastructure.web.response;
 
 import ronney.budgeting.application.output.TransactionOutput;
 
