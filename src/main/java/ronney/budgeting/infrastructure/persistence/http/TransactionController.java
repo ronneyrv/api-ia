@@ -12,8 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import ronney.budgeting.application.ListTransactionsByCategoryUseCase;
 import ronney.budgeting.application.PersistTransactionUseCase;
 import ronney.budgeting.domain.Category;
-import ronney.budgeting.infrastructure.persistence.http.request.TransactionRequest;
-import ronney.budgeting.infrastructure.persistence.http.response.TransactionResponse;
+import ronney.budgeting.infrastructure.web.request.TransactionRequest;
+import ronney.budgeting.infrastructure.web.response.TransactionResponse;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

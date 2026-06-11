@@ -1,4 +1,4 @@
-package ronney.budgeting.infrastructure.persistence.http.request;
+package ronney.budgeting.infrastructure.web.request;
 
 import ronney.budgeting.application.input.PersistTransactionInput;
 import ronney.budgeting.domain.Category;
