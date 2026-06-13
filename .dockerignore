@@ -1,5 +1,3 @@
 .gradle
 .git
 .idea
-src
-*.iml
