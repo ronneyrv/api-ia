@@ -1,8 +1,16 @@
 # Budgeting API
 
+![Java](https://img.shields.io/badge/Java-21-orange)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0-green)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-blue)
+![Render](https://img.shields.io/badge/Deploy-Render-purple)
+![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o-black)
+
 API inteligente para registro e consulta de transações financeiras através de linguagem natural e reconhecimento de voz, desenvolvida com Java, Spring Boot, Spring AI e OpenAI.
 
-## 📖 Visão Geral
+---
+
+## Visão Geral
 
 O objetivo do projeto é permitir que usuários registrem despesas utilizando voz ou texto em linguagem natural.
 
@@ -22,7 +30,19 @@ Fluxo da aplicação:
 
 ---
 
-## 🏗️ Arquitetura
+## Documentação Online
+
+### Swagger UI
+
+https://api-ai-0wzw.onrender.com/swagger
+
+### API em Produção
+
+https://api-ai-0wzw.onrender.com
+
+---
+
+## Arquitetura
 
 O projeto foi estruturado seguindo princípios de Clean Architecture.
 
@@ -31,7 +51,7 @@ src/main/java
 
 application
 ├── input
-│   └── PersitTransactionInput
+│   └── PersistTransactionInput
 ├── output
 │   └── PersistTransactionOutput
 ├── PersistTransactionUseCase
@@ -48,7 +68,7 @@ controller
 
 domain
 ├── Transaction
-├── Transactionld
+├── TransactionId
 ├── Category
 └── TransactionRepository
 
@@ -71,13 +91,13 @@ Contém as regras de negócio e contratos da aplicação.
 
 **Entidades e Objetos de Valor**
 
-- Transaction
-- TransactionId
-- Category
+* Transaction
+* TransactionId
+* Category
 
 **Portas**
 
-- TransactionRepository
+* TransactionRepository
 
 A camada de domínio não possui dependência de frameworks.
 
@@ -89,16 +109,16 @@ Contém os casos de uso da aplicação.
 
 **Inputs**
 
-- PersistTransactionInput
+* PersistTransactionInput
 
 **Outputs**
 
-- PersistTransactionOutput
+* PersistTransactionOutput
 
 **Use Cases**
 
-- PersistTransactionUseCase
-- ListTransactionsByCategoryUseCase
+* PersistTransactionUseCase
+* ListTransactionsByCategoryUseCase
 
 Os casos de uso representam as regras de negócio da aplicação e podem ser executados tanto por endpoints REST quanto por ferramentas utilizadas pela IA.
 
@@ -110,19 +130,25 @@ Responsável pelas implementações técnicas da aplicação.
 
 #### Persistência
 
-- TransactionEntity
-- JpaTransactionRepository
-- TransactionRepositoryImpl
+* TransactionEntity
+* JpaTransactionRepository
+* TransactionRepositoryImpl
 
 Implementa a comunicação com o banco de dados utilizando Spring Data JPA.
 
-#### HTTP
+#### Web
 
-- TransactionController
-- TransactionRequest
-- TransactionResponse
+* TransactionController
+* TransactionRequest
+* TransactionResponse
 
 Responsável pela exposição dos endpoints REST.
+
+#### AI
+
+* system-message.st
+
+Contém os prompts utilizados pelo modelo para interpretar e processar transações financeiras.
 
 ---
 
@@ -132,38 +158,15 @@ Responsável pela exposição dos endpoints REST.
 
 Centraliza a configuração dos componentes de IA utilizados pelo sistema:
 
-- ChatModel
-- ChatClient
-- OpenAI
-- Whisper
+* ChatModel
+* ChatClient
+* OpenAI
+* Whisper
+* Tool Calling
 
 ---
 
-### Controllers
-
-#### TransactionController
-
-Responsável pelas operações de transações:
-
-- Criar transação
-- Consultar transações por categoria
-- Processar transações via áudio
-
-#### ChatModelController
-
-Exemplos de utilização direta do ChatModel.
-
-#### ChatClientController
-
-Exemplos de utilização do ChatClient com Prompt Engineering.
-
-#### TextToSpeechController
-
-Responsável pela geração de áudio através da API Text-to-Speech da OpenAI.
-
----
-
-## 🤖 Arquitetura de IA
+## Arquitetura de IA
 
 A aplicação utiliza recursos do Spring AI para processamento de linguagem natural.
 
@@ -182,65 +185,104 @@ Tool Calling
  ├── PersistTransactionUseCase
  └── ListTransactionsByCategoryUseCase
  ↓
-MySQL
+PostgreSQL (Neon)
 ```
 
 ### Recursos Implementados
 
-- ChatModel
-- ChatClient
-- Prompt Engineering
-- Tool Calling
-- Speech-to-Text (Whisper)
-- Text-to-Speech (OpenAI TTS)
+* ChatModel
+* ChatClient
+* Prompt Engineering
+* Tool Calling
+* Speech-to-Text (Whisper)
+* Text-to-Speech (OpenAI TTS)
 
 ---
 
-## 🎯 Padrões Arquiteturais
+## Padrões Arquiteturais
 
-- Clean Architecture
-- Ports and Adapters
-- Repository Pattern
-- Use Case Pattern
-- Dependency Injection
-- Tool Calling com Spring AI
-### Inicialização
-
-```bash
-./gradlew bootRun
-```
-
-O Spring Boot detecta automaticamente o arquivo `compose.yml` e inicializa o banco de dados local.
+* Clean Architecture
+* Ports and Adapters
+* Repository Pattern
+* Use Case Pattern
+* Dependency Injection
+* Tool Calling com Spring AI
 
 ---
 
-## ⚙️ Configuração
+## Configuração
 
 ### application.properties
 
 ```properties
 spring.application.name=budgeting
 
+server.port=${PORT:8080}
+
+spring.datasource.url=${DB_URL}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 
 spring.ai.openai.api-key=${OPENAI_API_KEY}
 
-spring.ai.openai.chat.options.model=gpt-4o-mini
-
-spring.ai.model.audio.transcription=openai
-spring.ai.openai.audio.transcription.options.model=whisper-1
+springdoc.swagger-ui.path=/swagger
 ```
 
 ### Variáveis de Ambiente
 
 ```bash
-OPENAI_API_KEY=your_api_key
+DB_URL=jdbc:postgresql://...
+DB_USERNAME=...
+DB_PASSWORD=...
+
+OPENAI_API_KEY=sk-...
 ```
 
 ---
 
-## 📡 Endpoints
+## Execução Local
+
+### Executar aplicação
+
+```bash
+./gradlew bootRun
+```
+
+### Gerar artefato
+
+```bash
+./gradlew build
+```
+
+A aplicação utiliza PostgreSQL e requer as variáveis de ambiente configuradas antes da inicialização.
+
+---
+
+## Docker
+
+### Build
+
+```bash
+docker build -t budgeting .
+```
+
+### Executar Container
+
+```bash
+docker run \
+-e DB_URL=jdbc:postgresql://... \
+-e DB_USERNAME=... \
+-e DB_PASSWORD=... \
+-e OPENAI_API_KEY=... \
+-p 8080:8080 budgeting
+```
+
+---
+
+## Endpoints
 
 ### Criar Transação
 
@@ -296,7 +338,7 @@ POST /transactions/ai
 multipart/form-data
 ```
 
-#### Exemplo com curl
+#### Exemplo
 
 ```bash
 curl -X POST \
@@ -306,29 +348,7 @@ curl -X POST \
 
 ---
 
-## 🤖 Inteligência Artificial
-
-### Fluxo de Processamento
-
-```text
-Áudio
- ↓
-Whisper
- ↓
-Transcrição
- ↓
-GPT-4o Mini
- ↓
-Tool Calling
- ↓
-PersistTransactionUseCase
- ↓
-MySQL
-```
-
----
-
-## 🔧 Tool Calling
+## Tool Calling
 
 Os casos de uso são expostos para a IA através de `@Tool`.
 
@@ -344,7 +364,7 @@ A IA pode utilizar essas ferramentas automaticamente durante uma conversa.
 
 ---
 
-## 📝 Prompt Engineering
+## Prompt Engineering
 
 O comportamento do assistente é definido em:
 
@@ -354,15 +374,15 @@ src/main/resources/prompts/system-message.st
 
 O prompt instrui o modelo a:
 
-- Interpretar gastos financeiros.
-- Extrair informações relevantes.
-- Selecionar categorias válidas.
-- Executar ferramentas da aplicação.
-- Responder de forma objetiva.
+* Interpretar gastos financeiros.
+* Extrair informações relevantes.
+* Selecionar categorias válidas.
+* Executar ferramentas da aplicação.
+* Responder de forma objetiva.
 
 ---
 
-## 🎙️ Exemplo de Uso
+## Exemplo de Uso
 
 ### Entrada por Voz
 
@@ -387,30 +407,60 @@ Tool Calling
 ↓
 PersistTransactionUseCase
 ↓
-MySQL
+PostgreSQL (Neon)
 ```
 
 ---
 
-## 🎯 Objetivos de Aprendizado
+## Deploy
 
-Este projeto foi desenvolvido para explorar:
+A aplicação está implantada utilizando:
 
-- Clean Architecture
-- Spring Boot
-- Spring AI
-- OpenAI GPT-4o Mini
-- OpenAI Whisper
-- Tool Calling
-- Docker Compose
-- MySQL
-- JPA/Hibernate
-- APIs REST
-- Prompt Engineering
+* Render
+* PostgreSQL
+* Neon Database
+* Docker
+* OpenAI
+
+### Produção
+
+API
+
+https://api-ai-0wzw.onrender.com
+
+Swagger
+
+https://api-ai-0wzw.onrender.com/swagger
 
 ---
 
+## Objetivos de Aprendizado
+
+Este projeto foi desenvolvido para explorar:
+
+* Clean Architecture
+* Spring Boot
+* Spring AI
+* OpenAI GPT-4o Mini
+* OpenAI Whisper
+* OpenAI Text-to-Speech
+* Tool Calling
+* Prompt Engineering
+* PostgreSQL
+* Neon Database
+* Docker
+* Cloud Deployment com Render
+* JPA/Hibernate
+* APIs REST
+
+---
+
+## Autor
+
 **Ronney Rocha**
 
-- GitHub: https://github.com/ronneyrv/api-ia
-- LinkedIn: https://www.linkedin.com/in/ronney-rocha
+GitHub:
+https://github.com/ronneyrv
+
+LinkedIn:
+https://www.linkedin.com/in/ronney-rocha
