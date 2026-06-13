@@ -15,10 +15,17 @@ import ronney.budgeting.domain.Category;
 import ronney.budgeting.infrastructure.web.request.TransactionRequest;
 import ronney.budgeting.infrastructure.web.response.TransactionResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
+@Tag(
+        name = "Transactions",
+        description = "Operações relacionadas a transações financeiras"
+)
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {
@@ -45,6 +52,10 @@ public class TransactionController {
         this.textToSpeechModel = textToSpeechModel;
     }
 
+    @Operation(
+            summary = "Criar transação",
+            description = "Cria uma nova transação financeira."
+    )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TransactionResponse createTransaction(@RequestBody TransactionRequest request) {
@@ -52,6 +63,10 @@ public class TransactionController {
         return TransactionResponse.from(transaction);
     }
 
+    @Operation(
+            summary = "Listar por categoria",
+            description = "Retorna todas as transações de uma categoria."
+    )
     @GetMapping("/{category}")
     public List<TransactionResponse> readTransactions(@PathVariable Category category) {
         return listTransactionsByCategoryUseCase.execute(category).stream()
@@ -59,6 +74,14 @@ public class TransactionController {
                 .toList();
     }
 
+    @Operation(
+            summary = "Processar áudio com IA",
+            description = """
+                Recebe um arquivo de áudio,
+                realiza transcrição utilizando Whisper
+                e executa ações através de Tool Calling.
+                """
+    )
     @PostMapping(value = "/ai", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = "audio/mp3")
     ResponseEntity<Resource> transcribe(@RequestParam("file") MultipartFile file) {
         var userMessage = transcriptionModel.transcribe(file.getResource());
